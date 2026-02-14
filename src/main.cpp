@@ -5,11 +5,13 @@
 #define WIN_HEIGHT 800
 #define BLOCK_SIZE 50
 
+void createIBlock(int x, int y);
+
 typedef struct Block {
     int x;
     int y; 
     bool active; 
-} Block;
+} Block; 
 
 Block blocks[10][16];
 
@@ -23,6 +25,7 @@ int main(int argc, char const *argv[]) {
             blocks[i][j] = {i + 1, j, false};
         }
     }
+
 
     InitWindow(WIN_WIDTH, WIN_HEIGHT, "Tetris");
     SetTargetFPS(60);
@@ -49,9 +52,7 @@ int main(int argc, char const *argv[]) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             int x = GetMouseX() / BLOCK_SIZE;
             int y = GetMouseY() / BLOCK_SIZE;
-            if (x >= 1 && x < 11 && y >= 0 && y < 16) {
-                blocks[x - 1][y].active = !blocks[x - 1][y].active;
-            }
+            createIBlock(x, y);
         }
 
         for (int i = 0; i < 10; i++) {
@@ -69,4 +70,14 @@ int main(int argc, char const *argv[]) {
     }
 
     return 0;
+}
+
+void createIBlock(int x, int y) {
+    if (x < 1 || x > 7 || y < 0 || y > 15)
+        return; 
+
+    // Create the I block
+    for (int i = 0; i < 4; i++) {
+        blocks[x + i - 1][y].active = true;
+    }
 }
